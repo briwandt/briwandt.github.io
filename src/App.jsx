@@ -8,6 +8,7 @@ import IntelNoteCard from './components/IntelNoteCard';
 import { researchReports } from './data/research';
 import { detectionProjects } from './data/detections';
 import { intelNotes } from './data/intelNotes';
+import { fullReportText } from './data/fullReportText';
 import './App.css';
 
 export default function App() {
@@ -16,6 +17,8 @@ export default function App() {
   const [selectedIntelCategory, setSelectedIntelCategory] = useState('All');
   const [selectedDetectionTag, setSelectedDetectionTag] = useState('All');
   const [activeModalNote, setActiveModalNote] = useState(null);
+  const [isReportReaderOpen, setIsReportReaderOpen] = useState(false);
+  const [activeReportSectionId, setActiveReportSectionId] = useState('summary');
 
   // Scroll spy to highlight navbar links automatically
   useEffect(() => {
@@ -60,9 +63,9 @@ export default function App() {
     return selectedDetectionTag === 'All' || project.tag === selectedDetectionTag;
   });
 
-  // Prevent background scrolling when modal is active
+  // Prevent background scrolling when modal or report reader is active
   useEffect(() => {
-    if (activeModalNote) {
+    if (activeModalNote || isReportReaderOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -70,7 +73,88 @@ export default function App() {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [activeModalNote]);
+  }, [activeModalNote, isReportReaderOpen]);
+
+  // Mini-parser to render the report markdown content beautifully
+  const renderReportContent = (text) => {
+    return text.split('\n\n').map((block, idx) => {
+      if (block.startsWith('### ')) {
+        return (
+          <h3 
+            key={idx} 
+            style={{ 
+              fontSize: '1.6rem', 
+              color: 'var(--text-primary)', 
+              marginBottom: '16px', 
+              marginTop: idx > 0 ? '28px' : '0',
+              borderBottom: '1px solid var(--glass-border)', 
+              paddingBottom: '8px',
+              fontFamily: 'var(--font-heading)'
+            }}
+          >
+            {block.replace('### ', '')}
+          </h3>
+        );
+      }
+      if (block.startsWith('#### ')) {
+        return (
+          <h4 
+            key={idx} 
+            style={{ 
+              fontSize: '1.2rem', 
+              color: 'var(--text-primary)', 
+              marginBottom: '12px', 
+              marginTop: '20px',
+              fontFamily: 'var(--font-heading)'
+            }}
+          >
+            {block.replace('#### ', '')}
+          </h4>
+        );
+      }
+      if (block.startsWith('- ')) {
+        return (
+          <ul key={idx} style={{ marginLeft: '20px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {block.split('\n').map((item, itemIdx) => (
+              <li key={itemIdx} style={{ color: 'var(--text-secondary)', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                {item.replace('- ', '').replace('**', '').replace('**', '')}
+              </li>
+            ))}
+          </ul>
+        );
+      }
+      if (block.startsWith('| ')) {
+        const lines = block.split('\n').filter(l => l.trim() !== '');
+        const headers = lines[0].split('|').map(s => s.trim()).filter(s => s !== '');
+        const rows = lines.slice(2).map(r => r.split('|').map(s => s.trim()).filter(s => s !== ''));
+        return (
+          <div key={idx} className="table-responsive" style={{ overflowX: 'auto', marginBottom: '24px', marginTop: '16px' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem', textAlign: 'left', border: '1px solid var(--glass-border)' }}>
+              <thead>
+                <tr style={{ background: 'var(--bg-tertiary)', borderBottom: '2px solid var(--glass-border)' }}>
+                  {headers.map((h, hIdx) => (
+                    <th key={hIdx} style={{ padding: '12px 16px', fontWeight: '600', color: 'var(--text-primary)' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, rIdx) => (
+                  <tr key={rIdx} style={{ borderBottom: '1px solid var(--glass-border)', background: rIdx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)' }}>
+                    {row.map((cell, cIdx) => (
+                      <td key={cIdx} style={{ padding: '12px 16px', color: 'var(--text-secondary)', verticalAlign: 'top', lineHeight: '1.5' }}>
+                        {cell.startsWith('**') ? <strong>{cell.replace(/\*\*/g, '')}</strong> : cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      }
+      return <p key={idx} style={{ color: 'var(--text-secondary)', fontSize: '0.98rem', lineHeight: '1.65', marginBottom: '16px' }}>{block}</p>;
+    });
+  };
 
   return (
     <>
@@ -157,7 +241,14 @@ export default function App() {
 
             {/* Featured Report */}
             {researchReports.filter(r => r.featured).map(report => (
-              <ResearchCard key={report.id} report={report} />
+              <ResearchCard 
+                key={report.id} 
+                report={report} 
+                onReadReport={() => {
+                  setActiveReportSectionId('summary');
+                  setIsReportReaderOpen(true);
+                }}
+              />
             ))}
 
             <h3 style={{ fontSize: '1.5rem', marginBottom: '24px', marginTop: '24px', fontWeight: 600 }}>Upcoming Publications Roadmap</h3>
@@ -284,6 +375,72 @@ export default function App() {
               {activeModalNote.content.split('\n\n').map((paragraph, idx) => (
                 <p key={idx}>{paragraph}</p>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Full Report Reader View Overlay */}
+      {isReportReaderOpen && (
+        <div className="report-reader-overlay" onClick={() => setIsReportReaderOpen(false)}>
+          <div className="report-reader-content" onClick={(e) => e.stopPropagation()}>
+            <div className="report-reader-header">
+              <div>
+                <h3 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-heading)', marginBottom: '4px' }}>
+                  {fullReportText.title}
+                </h3>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{fullReportText.metadata}</p>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <a 
+                  href="/Identity_at_the_Center.pdf" 
+                  className="btn btn-secondary" 
+                  style={{ padding: '6px 12px', fontSize: '0.85rem' }}
+                >
+                  Download PDF
+                </a>
+                <button 
+                  className="modal-close" 
+                  style={{ position: 'static', width: '32px', height: '32px' }} 
+                  onClick={() => setIsReportReaderOpen(false)}
+                  aria-label="Close reader"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+
+            <div className="report-reader-layout">
+              {/* Sidebar Outline Navigation */}
+              <aside className="report-reader-sidebar">
+                <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.05em', paddingLeft: '16px', marginBottom: '8px', fontWeight: 600 }}>
+                  Report Contents
+                </span>
+                {fullReportText.sections.map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => {
+                      setActiveReportSectionId(section.id);
+                      const bodyEl = document.getElementById('report-body-scroller');
+                      if (bodyEl) bodyEl.scrollTop = 0;
+                    }}
+                    className={`report-sidebar-btn ${activeReportSectionId === section.id ? 'active' : ''}`}
+                  >
+                    {section.title}
+                  </button>
+                ))}
+              </aside>
+
+              {/* Main Reader Body */}
+              <div id="report-body-scroller" className="report-reader-body">
+                {fullReportText.sections
+                  .filter((s) => s.id === activeReportSectionId)
+                  .map((section) => (
+                    <div key={section.id} style={{ maxWidth: '780px', margin: '0 auto' }}>
+                      {renderReportContent(section.content)}
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
         </div>

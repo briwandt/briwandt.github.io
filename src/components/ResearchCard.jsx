@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FileText, Calendar, Tag, ChevronDown, ChevronUp, Lock, ArrowDownToLine, Compass, BookOpen } from 'lucide-react';
 
-export default function ResearchCard({ report }) {
+export default function ResearchCard({ report, onReadReport }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (report.isTeaser) {
@@ -61,7 +61,17 @@ export default function ResearchCard({ report }) {
           ))}
         </div>
 
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          {onReadReport && (
+            <button 
+              onClick={onReadReport} 
+              className="btn btn-primary"
+              style={{ padding: '8px 16px', fontSize: '0.9rem' }}
+            >
+              <BookOpen size={16} />
+              <span>Read Full Report</span>
+            </button>
+          )}
           <button 
             onClick={() => setIsExpanded(!isExpanded)} 
             className="btn btn-secondary"
@@ -69,19 +79,19 @@ export default function ResearchCard({ report }) {
           >
             {isExpanded ? (
               <>
-                <span>Hide Summary</span>
+                <span>Hide Outline</span>
                 <ChevronUp size={16} />
               </>
             ) : (
               <>
-                <span>View Summary</span>
+                <span>View Outline</span>
                 <ChevronDown size={16} />
               </>
             )}
           </button>
           <a 
             href={report.pdfUrl} 
-            className="btn btn-primary"
+            className="btn btn-outline"
             style={{ padding: '8px 16px', fontSize: '0.9rem' }}
             onClick={(e) => {
               if (report.pdfUrl === '#') {
