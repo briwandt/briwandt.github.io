@@ -217,7 +217,7 @@ Modern infostealer operations support a diverse ecosystem including MaaS operato
 Modern infostealer operations rely heavily on social engineering, trusted-platform abuse, and technical obfuscation. Rather than exploiting technical vulnerabilities, they manipulate users into executing payloads.
 
 #### 3.1 Phishing and Fake Verification Interfaces
-Phishing remains one of the primary vectors, especially when combined with ClickFix-style CAPTCHA lures. Attackers host pages that mimic legitimate Cloudflare Turnstile or Google reCAPTCHA windows. When a user tries to verify, Javascript silently copies malicious commands to the clipboard (`navigator.clipboard.writeText()`) and guides the user to open a Run dialog (Win+R) and paste the command, executing the loader under the guise of an update.
+Phishing remains one of the primary vectors, especially when combined with ClickFix-style CAPTCHA lures. Attackers host pages that mimic legitimate Cloudflare Turnstile or Google reCAPTCHA windows. When a user tries to verify, Javascript silently copies malicious commands to the clipboard (\`navigator.clipboard.writeText()\`) and guides the user to open a Run dialog (Win+R) and paste the command, executing the loader under the guise of an update.
 
 #### 3.2 ClickFix and Fake Verification Campaigns
 These campaigns bypass traditional endpoint detections because the commands are manually pasted and executed by the user. They rely on "pastejacking" and are highly industrialized, providing multilingual templates and builder services to MaaS affiliates.
