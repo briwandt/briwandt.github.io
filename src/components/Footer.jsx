@@ -21,9 +21,10 @@ export default function Footer() {
               Specializations
             </h5>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+              <li>Incident Response (IR) & Threat Hunting</li>
+              <li>Cloud Security & Attack Path Auditing</li>
               <li>Identity Threat Detection & Response (ITDR)</li>
-              <li>Agentic AI Integration Auditing</li>
-              <li>Cloud Infrastructure Attack Paths</li>
+              <li>Agentic AI Security Auditing</li>
             </ul>
           </div>
           <div>
@@ -31,7 +32,7 @@ export default function Footer() {
               Research Mission
             </h5>
             <p style={{ maxWidth: '300px', fontSize: '0.8rem', lineHeight: '1.4', color: 'var(--text-muted)' }}>
-              Proactively documenting how emerging AI agent runtimes and modern cloud identity provider configurations alter the corporate cyber attack landscape.
+              Leveraging an extensive background in Incident Response (IR) to proactively document how emerging AI agent runtimes, modern identity providers, and cloud control planes alter the enterprise attack surface.
             </p>
           </div>
         </div>

@@ -80,7 +80,7 @@ export default function Navbar({ activeSection, setActiveSection }) {
             <GithubIcon size={20} />
           </a>
           <a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/brianna-morgan-wandt-b0247714b/?skipRedirect=true"
             target="_blank"
             rel="noopener noreferrer"
             className="navbar-social-link"

@@ -182,11 +182,11 @@ export default function App() {
             marginBottom: '20px',
             color: 'var(--text-secondary)'
           }}>
-            Security Researcher <span style={{ color: 'var(--accent-indigo)' }}>|</span> AI Threat Intelligence <span style={{ color: 'var(--accent-cyan)' }}>|</span> Identity Security
+            Security & Incident Response Researcher <span style={{ color: 'var(--accent-indigo)' }}>|</span> Cloud Security <span style={{ color: 'var(--accent-cyan)' }}>|</span> AI Threat Intelligence
           </h2>
 
           <p className="hero-description">
-            Researching how artificial intelligence, cloud infrastructure, and modern identity systems are reshaping the enterprise attack surface. Developing proactive detections to secure agentic runtimes and decentralized identities.
+            Specializing in Cloud Security and Incident Response (IR). Researching how emerging AI systems, modern identity providers, and cloud control planes reshape enterprise attack surfaces—leveraging hands-on IR detection engineering to protect agentic runtimes.
           </p>
 
           <div className="hero-ctas">
