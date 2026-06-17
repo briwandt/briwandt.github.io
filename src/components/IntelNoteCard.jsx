@@ -20,7 +20,7 @@ export default function IntelNoteCard({ note, onReadMore }) {
     <div className="glass-card note-card">
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <span className={`badge \${getBadgeColor(note.category)}`}>{note.category}</span>
+          <span className={`badge ${getBadgeColor(note.category)}`}>{note.category}</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
             <Clock size={12} />
             <span>{note.readingTime}</span>

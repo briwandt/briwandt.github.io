@@ -61,7 +61,7 @@ export default function Navbar({ activeSection, setActiveSection }) {
                   setActiveSection(item.id);
                   document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className={`navbar-link \${activeSection === item.id ? 'active' : ''}`}
+                className={`navbar-link ${activeSection === item.id ? 'active' : ''}`}
               >
                 {item.label}
               </a>

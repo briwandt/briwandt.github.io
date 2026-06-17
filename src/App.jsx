@@ -188,7 +188,7 @@ export default function App() {
                 <button
                   key={tag}
                   onClick={() => setSelectedDetectionTag(tag)}
-                  className={`filter-btn \${selectedDetectionTag === tag ? 'active' : ''}`}
+                  className={`filter-btn ${selectedDetectionTag === tag ? 'active' : ''}`}
                 >
                   {tag}
                 </button>
@@ -237,7 +237,7 @@ export default function App() {
                   <button
                     key={cat}
                     onClick={() => setSelectedIntelCategory(cat)}
-                    className={`filter-btn \${selectedIntelCategory === cat ? 'active' : ''}`}
+                    className={`filter-btn ${selectedIntelCategory === cat ? 'active' : ''}`}
                   >
                     {cat}
                   </button>
