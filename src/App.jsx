@@ -8,7 +8,7 @@ import IntelNoteCard from './components/IntelNoteCard';
 import { researchReports } from './data/research';
 import { detectionProjects } from './data/detections';
 import { intelNotes } from './data/intelNotes';
-import { fullReportText } from './data/fullReportText';
+import { fullReportsData } from './data/fullReportText';
 import './App.css';
 
 export default function App() {
@@ -19,6 +19,7 @@ export default function App() {
   const [activeModalNote, setActiveModalNote] = useState(null);
   const [isReportReaderOpen, setIsReportReaderOpen] = useState(false);
   const [activeReportSectionId, setActiveReportSectionId] = useState('summary');
+  const [activeReportId, setActiveReportId] = useState('identity-at-the-center');
 
   // Scroll spy to highlight navbar links automatically
   useEffect(() => {
@@ -245,18 +246,27 @@ export default function App() {
                 key={report.id} 
                 report={report} 
                 onReadReport={() => {
+                  setActiveReportId(report.id);
                   setActiveReportSectionId('summary');
                   setIsReportReaderOpen(true);
                 }}
               />
             ))}
 
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '24px', marginTop: '24px', fontWeight: 600 }}>Upcoming Publications Roadmap</h3>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '24px', marginTop: '24px', fontWeight: 600 }}>Research Publications Roadmap</h3>
             
-            {/* Teaser Reports Grid */}
+            {/* Teaser & Unlocked Reports Grid */}
             <div className="research-grid">
               {researchReports.filter(r => !r.featured).map(report => (
-                <ResearchCard key={report.id} report={report} />
+                <ResearchCard 
+                  key={report.id} 
+                  report={report} 
+                  onReadReport={report.isTeaser ? null : () => {
+                    setActiveReportId(report.id);
+                    setActiveReportSectionId('summary');
+                    setIsReportReaderOpen(true);
+                  }}
+                />
               ))}
             </div>
           </div>
@@ -381,70 +391,74 @@ export default function App() {
       )}
 
       {/* Full Report Reader View Overlay */}
-      {isReportReaderOpen && (
-        <div className="report-reader-overlay" onClick={() => setIsReportReaderOpen(false)}>
-          <div className="report-reader-content" onClick={(e) => e.stopPropagation()}>
-            <div className="report-reader-header">
-              <div>
-                <h3 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-heading)', marginBottom: '4px' }}>
-                  {fullReportText.title}
-                </h3>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{fullReportText.metadata}</p>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <a 
-                  href="/Identity_at_the_Center.pdf" 
-                  className="btn btn-secondary" 
-                  style={{ padding: '6px 12px', fontSize: '0.85rem' }}
-                >
-                  Download PDF
-                </a>
-                <button 
-                  className="modal-close" 
-                  style={{ position: 'static', width: '32px', height: '32px' }} 
-                  onClick={() => setIsReportReaderOpen(false)}
-                  aria-label="Close reader"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-            </div>
-
-            <div className="report-reader-layout">
-              {/* Sidebar Outline Navigation */}
-              <aside className="report-reader-sidebar">
-                <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.05em', paddingLeft: '16px', marginBottom: '8px', fontWeight: 600 }}>
-                  Report Contents
-                </span>
-                {fullReportText.sections.map((section) => (
-                  <button
-                    key={section.id}
-                    onClick={() => {
-                      setActiveReportSectionId(section.id);
-                      const bodyEl = document.getElementById('report-body-scroller');
-                      if (bodyEl) bodyEl.scrollTop = 0;
-                    }}
-                    className={`report-sidebar-btn ${activeReportSectionId === section.id ? 'active' : ''}`}
+      {isReportReaderOpen && (() => {
+        const currentReport = fullReportsData[activeReportId] || {};
+        return (
+          <div className="report-reader-overlay" onClick={() => setIsReportReaderOpen(false)}>
+            <div className="report-reader-content" onClick={(e) => e.stopPropagation()}>
+              <div className="report-reader-header">
+                <div>
+                  <h3 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-heading)', marginBottom: '4px' }}>
+                    {currentReport.title}
+                  </h3>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{currentReport.metadata}</p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <a 
+                    href={currentReport.pdfUrl} 
+                    className="btn btn-secondary" 
+                    style={{ padding: '6px 12px', fontSize: '0.85rem' }}
+                    download
                   >
-                    {section.title}
+                    Download PDF
+                  </a>
+                  <button 
+                    className="modal-close" 
+                    style={{ position: 'static', width: '32px', height: '32px' }} 
+                    onClick={() => setIsReportReaderOpen(false)}
+                    aria-label="Close reader"
+                  >
+                    <X size={16} />
                   </button>
-                ))}
-              </aside>
+                </div>
+              </div>
 
-              {/* Main Reader Body */}
-              <div id="report-body-scroller" className="report-reader-body">
-                {fullReportText.sections
-                  .filter((s) => s.id === activeReportSectionId)
-                  .map((section) => (
-                    <div key={section.id} style={{ maxWidth: '780px', margin: '0 auto' }}>
-                      {renderReportContent(section.content)}
-                    </div>
+              <div className="report-reader-layout">
+                {/* Sidebar Outline Navigation */}
+                <aside className="report-reader-sidebar">
+                  <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.05em', paddingLeft: '16px', marginBottom: '8px', fontWeight: 600 }}>
+                    Report Contents
+                  </span>
+                  {currentReport.sections?.map((section) => (
+                    <button
+                      key={section.id}
+                      onClick={() => {
+                        setActiveReportSectionId(section.id);
+                        const bodyEl = document.getElementById('report-body-scroller');
+                        if (bodyEl) bodyEl.scrollTop = 0;
+                      }}
+                      className={`report-sidebar-btn ${activeReportSectionId === section.id ? 'active' : ''}`}
+                    >
+                      {section.title}
+                    </button>
                   ))}
+                </aside>
+
+                {/* Main Reader Body */}
+                <div id="report-body-scroller" className="report-reader-body">
+                  {currentReport.sections
+                    ?.filter((s) => s.id === activeReportSectionId)
+                    .map((section) => (
+                      <div key={section.id} style={{ maxWidth: '780px', margin: '0 auto' }}>
+                        {renderReportContent(section.content)}
+                      </div>
+                    ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </>
   );
 }
