@@ -239,7 +239,7 @@ Attackers inject malicious JavaScript into trusted websites to direct users to f
 Antivirus solutions are bypassed through code virtualization, process hollowing, and legitimate cloud service C2 channels. Research indicates a high percentage of compromised hosts were running updated antivirus at the time of infection.
 
 #### 3.6 Malvertising and Trojanized Software
-Poisoned ads target developers looking for tools like Notion, Docker, or AI utilities. Cloned portals deliver trojanized executables (e.g., `notiom.exe`) designed to scrape `.aws/credentials`, SSH keys, and package manager tokens.`
+Poisoned ads target developers looking for tools like Notion, Docker, or AI utilities. Cloned portals deliver trojanized executables (e.g., \`notiom.exe\`) designed to scrape \`.aws/credentials\`, SSH keys, and package manager tokens.`
       },
       {
         id: "lifecycle",
@@ -249,7 +249,7 @@ Poisoned ads target developers looking for tools like Notion, Docker, or AI util
 Infostealer infections serve as the initial gate for broader cloud intrusion campaigns.
 
 #### 4.1 Phase 1 — Reconnaissance and Initial Access
-Infostealers scan the host filesystem and memory for credentials, targeting `.env` files, `.git` configs, browser session cookies, and machine keys. These credentials are dry-run validated immediately.
+Infostealers scan the host filesystem and memory for credentials, targeting \`.env\` files, \`.git\` configs, browser session cookies, and machine keys. These credentials are dry-run validated immediately.
 
 #### 4.2 Phase 2 — Validation and Persistence
 Stolen credentials are automatically validated against cloud APIs. Persistence is established via ConsentFix OAuth apps or backdoor Model Context Protocol (MCP) server configurations.
@@ -300,7 +300,7 @@ The cloud pivot in modern infostealer operations relies on taking cookies and to
 A common technique is browser session hijacking. Stolen session cookies are loaded into the attacker's browser to inherit active sessions on cloud consoles.
 
 #### 5.7 From Low-Privilege Access to Cloud-Wide Compromise
-Seemingly low-privilege developer accounts can still read code repositories, inspect `.env` configurations, and pivot into highly sensitive CI/CD pipelines, eventually escalating to admin privileges.`
+Seemingly low-privilege developer accounts can still read code repositories, inspect \`.env\` configurations, and pivot into highly sensitive CI/CD pipelines, eventually escalating to admin privileges.`
       },
       {
         id: "weaponizing",
@@ -374,11 +374,11 @@ Manufacturing (low downtime tolerance), Healthcare (sensitive data, high breach 
 - **Execution (T1204.002)**: User-assisted PowerShell command execution.
 - **Defense Evasion (T1027)**: Obfuscated and packed malware loaders.
 - **Credential Access (T1539)**: Replay of web session cookies.
-- **Discovery (T1083)**: File discovery scanning for `.env` and API keys.
+- **Discovery (T1083)**: File discovery scanning for \`.env\` and API keys.
 - **Persistence (T1098)**: Malicious OAuth app consent.
 
 #### 11.2 Behavioral Detection Strategies
-- Monitor AWS CloudTrail for anomalous `InvokeModel` API calls.
+- Monitor AWS CloudTrail for anomalous \`InvokeModel\` API calls.
 - Track browser processes launching with unusual execution arguments.
 - Identify "silent zombie" rules where detection inputs have died.
 
