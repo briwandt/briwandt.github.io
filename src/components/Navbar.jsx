@@ -40,7 +40,8 @@ export default function Navbar({ activeSection, setActiveSection }) {
     { id: 'home', label: 'Home' },
     { id: 'research', label: 'Research Program' },
     { id: 'detections', label: 'Detection Lab' },
-    { id: 'intel', label: 'Intelligence Notes' }
+    { id: 'intel', label: 'Intelligence Notes' },
+    { id: 'contact', label: 'Contact' }
   ];
 
   return (

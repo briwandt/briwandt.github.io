@@ -21,9 +21,36 @@ export default function App() {
   const [activeReportSectionId, setActiveReportSectionId] = useState('summary');
   const [activeReportId, setActiveReportId] = useState('identity-at-the-center');
 
+  // Contact Form States
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [formStatus, setFormStatus] = useState({ type: '', message: '' }); // 'success', 'error', 'submitting'
+
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setFormStatus({ type: 'error', message: 'Please fill in all required fields (Name, Email, Message).' });
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setFormStatus({ type: 'error', message: 'Please enter a valid email address.' });
+      return;
+    }
+
+    setFormStatus({ type: 'submitting', message: 'Sending inquiry...' });
+    setTimeout(() => {
+      console.log('Inquiry received:', formData);
+      setFormStatus({ 
+        type: 'success', 
+        message: 'Inquiry submitted successfully! I will get back to you shortly.' 
+      });
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    }, 1000);
+  };
+
   // Scroll spy to highlight navbar links automatically
   useEffect(() => {
-    const sections = ['home', 'research', 'detections', 'intel'];
+    const sections = ['home', 'research', 'detections', 'intel', 'contact'];
     const observerOptions = {
       root: null,
       rootMargin: '-30% 0px -50% 0px',
@@ -359,6 +386,161 @@ export default function App() {
               ) : (
                 <p style={{ textAlign: 'center', gridColumn: '1/-1', padding: '40px' }}>No intelligence notes found matching your search.</p>
               )}
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section id="contact" className="page-section">
+          <div className="container section-container">
+            <div className="section-header">
+              <span className="badge badge-cyan" style={{ marginBottom: '12px' }}>Inquiries</span>
+              <h2 className="section-title">Submit Inquiry</h2>
+              <p className="section-subtitle">
+                Have a question about my research, detection engineering templates, or malware analyses? Submit an inquiry below, and I'll get back to you.
+              </p>
+            </div>
+
+            <div className="contact-layout">
+              {/* Contact Info Card */}
+              <div className="glass-card contact-info-card">
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '16px', fontWeight: 600 }}>Let's Collaborate</h3>
+                <p style={{ fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--text-secondary)', marginBottom: '24px' }}>
+                  I'm always open to discussing threat intelligence, cloud infrastructure security, custom detection engineering strategies, and joint malware research campaigns.
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="contact-icon-wrapper">
+                      <Shield size={18} style={{ color: 'var(--accent-cyan)' }} />
+                    </div>
+                    <div>
+                      <h4 style={{ fontSize: '0.9rem', color: 'var(--text-primary)', margin: 0, fontWeight: 600 }}>Specializations</h4>
+                      <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0 }}>Incident Response & Cloud Defenses</p>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="contact-icon-wrapper">
+                      <BookOpen size={18} style={{ color: 'var(--accent-indigo)' }} />
+                    </div>
+                    <div>
+                      <h4 style={{ fontSize: '0.9rem', color: 'var(--text-primary)', margin: 0, fontWeight: 600 }}>GitHub Publications</h4>
+                      <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0 }}>Open-source YARA & KQL rules</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Form Card */}
+              <div className="glass-card contact-form-card">
+                {formStatus.type === 'success' ? (
+                  <div className="contact-success-state" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center', padding: '40px 0' }}>
+                    <div style={{
+                      width: '64px',
+                      height: '64px',
+                      borderRadius: '50%',
+                      background: 'rgba(16, 185, 129, 0.1)',
+                      border: '2px solid var(--accent-emerald)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '20px',
+                      color: 'var(--accent-emerald)',
+                      boxShadow: '0 0 16px rgba(16, 185, 129, 0.2)'
+                    }}>
+                      <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    </div>
+                    <h3 style={{ fontSize: '1.5rem', marginBottom: '12px', color: 'var(--text-primary)' }}>Message Sent!</h3>
+                    <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', maxWidth: '320px', margin: '0 auto 24px', lineHeight: '1.5' }}>
+                      {formStatus.message}
+                    </p>
+                    <button 
+                      onClick={() => setFormStatus({ type: '', message: '' })} 
+                      className="btn btn-secondary"
+                      style={{ padding: '8px 20px' }}
+                    >
+                      Send Another Message
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleContactSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }} className="form-row-mobile">
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label htmlFor="contact-name" style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+                          Name <span style={{ color: 'var(--accent-cyan)' }}>*</span>
+                        </label>
+                        <input
+                          id="contact-name"
+                          type="text"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          placeholder="Your Name"
+                          className="form-input"
+                        />
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label htmlFor="contact-email" style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+                          Email <span style={{ color: 'var(--accent-cyan)' }}>*</span>
+                        </label>
+                        <input
+                          id="contact-email"
+                          type="email"
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          placeholder="your.email@example.com"
+                          className="form-input"
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <label htmlFor="contact-subject" style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Subject</label>
+                      <input
+                        id="contact-subject"
+                        type="text"
+                        value={formData.subject}
+                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                        placeholder="Inquiry Subject"
+                        className="form-input"
+                      />
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <label htmlFor="contact-message" style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+                        Message <span style={{ color: 'var(--accent-cyan)' }}>*</span>
+                      </label>
+                      <textarea
+                        id="contact-message"
+                        required
+                        rows="5"
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        placeholder="Type your message here..."
+                        className="form-input"
+                        style={{ resize: 'vertical' }}
+                      />
+                    </div>
+
+                    {formStatus.type === 'error' && (
+                      <div style={{ fontSize: '0.85rem', color: 'var(--accent-cyan)', padding: '10px 12px', background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: 'var(--radius-sm)' }}>
+                        {formStatus.message}
+                      </div>
+                    )}
+
+                    <button 
+                      type="submit" 
+                      className="btn btn-primary" 
+                      style={{ alignSelf: 'flex-start', padding: '10px 24px', minWidth: '140px', justifyContent: 'center' }}
+                      disabled={formStatus.type === 'submitting'}
+                    >
+                      {formStatus.type === 'submitting' ? 'Sending...' : 'Submit Inquiry'}
+                    </button>
+                  </form>
+                )}
+              </div>
             </div>
           </div>
         </section>

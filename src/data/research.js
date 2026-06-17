@@ -41,6 +41,7 @@ export const researchReports = [
     author: "Brianna Wandt",
     tags: ["Infostealers", "SaaS Compromise", "AI Intrusion", "Cloud Security", "Threat Intelligence"],
     pdfUrl: "/Beyond_Credential_Theft.pdf",
+    coverImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop",
     summary: "Analyzing the technical mechanics of modern info-stealing malware (Lumma, EDDIESTEALER, StealC) and how threat actors use harvested sessions, OAuth tokens, and non-human identities (NHIs) to pivot from endpoint compromise to SaaS and cloud environments.",
     keyFindings: [
       "Token Harvesting: Modern infostealers target active session tokens, browser cookies, and service account configs rather than raw static passwords.",
@@ -74,6 +75,7 @@ export const researchReports = [
     author: "Brianna Wandt",
     tags: ["Malware Analysis", "Agent Tesla", "Reverse Engineering", "YARA Signatures", "DFIR"],
     pdfUrl: "/Agent_Tesla_Malware_Loader_Analysis.pdf",
+    coverImage: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop",
     summary: "A detailed malware triage and reverse engineering analysis of an obfuscated 64-bit .NET loader containing Agent Tesla-style information-stealing capabilities, Costura packing, and XVM runtime virtualization.",
     keyFindings: [
       "Costura Compression: The malware uses the Costura framework to compress and embed dependent assemblies inside resources.",
