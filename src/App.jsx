@@ -25,7 +25,7 @@ export default function App() {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [formStatus, setFormStatus] = useState({ type: '', message: '' }); // 'success', 'error', 'submitting'
 
-  const handleContactSubmit = (e) => {
+  const handleContactSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
       setFormStatus({ type: 'error', message: 'Please fill in all required fields (Name, Email, Message).' });
@@ -38,14 +38,35 @@ export default function App() {
     }
 
     setFormStatus({ type: 'submitting', message: 'Sending inquiry...' });
-    setTimeout(() => {
-      console.log('Inquiry received:', formData);
-      setFormStatus({ 
-        type: 'success', 
-        message: 'Inquiry submitted successfully! I will get back to you shortly.' 
+
+    try {
+      const response = await fetch('https://contact-worker.briwandt.workers.dev', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 1000);
+
+      if (response.ok) {
+        setFormStatus({ 
+          type: 'success', 
+          message: 'Inquiry submitted successfully! I will get back to you shortly.' 
+        });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        const errMsg = await response.text();
+        setFormStatus({ 
+          type: 'error', 
+          message: `Failed to send message: ${errMsg || 'Please try again later.'}` 
+        });
+      }
+    } catch (error) {
+      setFormStatus({ 
+        type: 'error', 
+        message: 'Network error. Please verify the Cloudflare Worker is active and online.' 
+      });
+    }
   };
 
   // Scroll spy to highlight navbar links automatically
