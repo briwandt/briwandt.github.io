@@ -45,7 +45,7 @@ Once the victim clicks "Accept", the app receives an authorization code which it
     category: "Threat Intelligence",
     readingTime: "4 min read",
     summary: "The security implications of deploying autonomous AI agents with static API keys in enterprise environments.",
-    content: `The rapid adoption of Agentic AI—systems that can autonomously plan, write code, search the web, and execute actions—has created a massive influx of machine identities. These agents act on behalf of human users, but they operate as services running in containers or serverless runtimes.
+    content: `The rapid adoption of Agentic AI systems that can autonomously plan, write code, search the web, and execute actions has created a massive influx of machine identities. These agents act on behalf of human users, but they operate as services running in containers or serverless runtimes.
 
 To perform actions (e.g., querying databases, updating CRM records, or committing code), these agents are provisioned with powerful API tokens and service account secrets. Too often, developers hardcode these credentials into environment files, pass them in plaintext across RAG prompts, or log them in system execution histories.
 

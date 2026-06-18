@@ -213,7 +213,7 @@ export default function App() {
           </h2>
 
           <p className="hero-description">
-            Specializing in Cloud Security and Incident Response (IR). Researching how emerging AI systems, modern identity providers, and cloud control planes reshape enterprise attack surfaces—leveraging hands-on IR detection engineering to protect agentic runtimes.
+            Researching how emerging AI systems, modern identity providers, and cloud control planes reshape enterprise attack surfaces, while leveraging hands-on Incident Response (IR) detection engineering to protect agentic runtimes.
           </p>
 
           <div className="hero-ctas">

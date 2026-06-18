@@ -80,7 +80,7 @@ The growing adoption of enterprise AI solutions may further expand these opportu
 Emerging reporting suggests that threat actors may also seek to manipulate the information sources consumed by AI systems themselves. Researchers and industry reporting have highlighted scenarios in which fraudulent websites, scam storefronts, or attacker-controlled content are optimized to appear within AI-generated recommendations and search results. Rather than directly targeting the user through traditional phishing channels, these techniques seek to exploit trust in the AI system's recommendations, potentially increasing the credibility of malicious links and fraudulent services. This evolution suggests that attackers may increasingly target not only AI users, but also the broader information ecosystems that influence AI-generated outputs and recommendations.
 
 #### 2.4 Why This Matters for Identity
-The significance of these developments extends beyond the emergence of new attack techniques. Many modern intrusion campaigns already rely on social engineering, credential theft, MFA abuse, and other identity-focused tactics as primary means of obtaining enterprise access. The capabilities discussed throughout this section—including AI-enhanced phishing, personalized social engineering, deepfake impersonation, voice cloning, and AI-themed lures—primarily serve to increase the effectiveness of existing identity attack techniques rather than introduce entirely new methods of compromise.
+The significance of these developments extends beyond the emergence of new attack techniques. Many modern intrusion campaigns already rely on social engineering, credential theft, MFA abuse, and other identity-focused tactics as primary means of obtaining enterprise access. The capabilities discussed throughout this section, which include AI-enhanced phishing, personalized social engineering, deepfake impersonation, voice cloning, and AI-themed lures, primarily serve to increase the effectiveness of existing identity attack techniques rather than introduce entirely new methods of compromise.
 
 As organizations increasingly depend on centralized identity providers, cloud-based authentication systems, and federated access architectures, successful identity compromise can provide access to a growing number of enterprise resources. Generative AI may therefore function as a force multiplier for identity-focused attacks by improving deception, reducing operational costs, and enabling greater levels of scale and personalization. Consequently, organizations should increasingly view identity security as a foundational component of AI security, as the compromise of trusted identities may provide adversaries with access not only to users and applications, but also to cloud services, data, and emerging AI-enabled systems.`
       },
@@ -248,19 +248,19 @@ Poisoned ads target developers looking for tools like Notion, Docker, or AI util
 
 Infostealer infections serve as the initial gate for broader cloud intrusion campaigns.
 
-#### 4.1 Phase 1 — Reconnaissance and Initial Access
+#### 4.1 Phase 1: Reconnaissance and Initial Access
 Infostealers scan the host filesystem and memory for credentials, targeting \`.env\` files, \`.git\` configs, browser session cookies, and machine keys. These credentials are dry-run validated immediately.
-
-#### 4.2 Phase 2 — Validation and Persistence
+ 
+#### 4.2 Phase 2: Validation and Persistence
 Stolen credentials are automatically validated against cloud APIs. Persistence is established via ConsentFix OAuth apps or backdoor Model Context Protocol (MCP) server configurations.
-
-#### 4.3 Phase 3 — AI-Assisted Reconnaissance and Intrusion
+ 
+#### 4.3 Phase 3: AI-Assisted Reconnaissance and Intrusion
 Attackers use compromised AI agents or internal RAG models to summarize corporate documentation, map network topologies, and discover privilege escalation paths.
-
-#### 4.4 Phase 4 — Lateral Movement and Scaling
+ 
+#### 4.4 Phase 4: Lateral Movement and Scaling
 With compromised non-human identities, attackers generate new API tokens, add custom SaaS integrations, and move laterally while blending into normal machine-to-machine traffic.
-
-#### 4.5 Phase 5 — Impact, Monetization, and Exfiltration
+ 
+#### 4.5 Phase 5: Impact, Monetization, and Exfiltration
 Rather than deploying noisy ransomware, attackers focus on "LLMjacking" (compute theft via model APIs), data exfiltration, or reselling cloud access logs.
 
 #### Human vs. Non-Human Identity Attacks
@@ -491,8 +491,8 @@ Several methods within this class could not be fully decompiled due to deliberat
       },
       {
         id: "cutter-disassembly",
-        title: "Advanced Static Analysis - Cutter",
-        content: `### Advanced Static Analysis - Cutter
+        title: "Advanced Static Analysis using Cutter",
+        content: `### Advanced Static Analysis using Cutter
 
 Disassembly of the sample using Cutter revealed largely non-meaningful instructions, including repeated \`add byte [rax], al\` operations and invalid opcodes. This indicates that the binary is packed or obfuscated, preventing direct analysis of its true functionality at the assembly level. The presence of such patterns suggests the use of a loader or packing mechanism, which defers execution of the actual malicious payload until runtime.
 
@@ -614,16 +614,16 @@ rule MAL_DotNet_AgentTesla_Obfuscated_Loader
 \`\`\`
 
 #### MITRE ATT&CK Mapping
-- **Defense Evasion (T1027 - Obfuscated Files)**: Malformed Intermediate Language, XVM runtime virtualization, packed sections. (High Confidence)
-- **Defense Evasion (T1027.002 - Software Packing)**: Costura embedded dependencies, high-entropy PE sections. (High Confidence)
-- **Defense Evasion (T1497 - Virtualization/Sandbox Evasion)**: Immediate termination upon detecting FLARE VM, \`NtTerminateProcess\` calls. (Medium Confidence)
-- **Command & Control (T1071.001 - Web Protocols)**: References to \`HttpClient\`, \`GetAsync\`, \`PostAsync\`. (High Confidence)
-- **Exfiltration (T1567 - Exfiltration Over Web Service)**: \`UploadString\`, \`UploadData\`, JSON formatting. (Medium Confidence)
-- **Exfiltration (T1048 - Exfiltration Over Alternative Protocol)**: SMTP libraries (\`Rebex.Net.Smtp\`). (Medium Confidence)
-- **Discovery (T1082 - System Information Discovery)**: \`get_UserName\`, \`GetHostName\`, motherboard queries. (High Confidence)
-- **Execution (T1129 - Shared Modules)**: Costura reflection-based assembly execution. (High Confidence)
-- **Defense Evasion (T1620 - Reflective Code Loading)**: \`Assembly.Load\` memory loading. (Medium Confidence)
-- **Defense Evasion (T1055 - Process Injection)**: Process injection stubs and strings (\`ProcessInjection\`). (Medium Confidence)`
+- **Defense Evasion (T1027: Obfuscated Files)**: Malformed Intermediate Language, XVM runtime virtualization, packed sections. (High Confidence)
+- **Defense Evasion (T1027.002: Software Packing)**: Costura embedded dependencies, high-entropy PE sections. (High Confidence)
+- **Defense Evasion (T1497: Virtualization/Sandbox Evasion)**: Immediate termination upon detecting FLARE VM, \`NtTerminateProcess\` calls. (Medium Confidence)
+- **Command & Control (T1071.001: Web Protocols)**: References to \`HttpClient\`, \`GetAsync\`, \`PostAsync\`. (High Confidence)
+- **Exfiltration (T1567: Exfiltration Over Web Service)**: \`UploadString\`, \`UploadData\`, JSON formatting. (Medium Confidence)
+- **Exfiltration (T1048: Exfiltration Over Alternative Protocol)**: SMTP libraries (\`Rebex.Net.Smtp\`). (Medium Confidence)
+- **Discovery (T1082: System Information Discovery)**: \`get_UserName\`, \`GetHostName\`, motherboard queries. (High Confidence)
+- **Execution (T1129: Shared Modules)**: Costura reflection-based assembly execution. (High Confidence)
+- **Defense Evasion (T1620: Reflective Code Loading)**: \`Assembly.Load\` memory loading. (Medium Confidence)
+- **Defense Evasion (T1055: Process Injection)**: Process injection stubs and strings (\`ProcessInjection\`). (Medium Confidence)`
       }
     ]
   }
