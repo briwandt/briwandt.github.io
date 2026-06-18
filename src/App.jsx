@@ -40,7 +40,7 @@ export default function App() {
     setFormStatus({ type: 'submitting', message: 'Sending inquiry...' });
 
     try {
-      const response = await fetch('https://contact-worker.briwandt.workers.dev', {
+      const response = await fetch('https://shrill-silence-91d0.briannawandt.workers.dev', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
