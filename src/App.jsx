@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import ResearchCard from './components/ResearchCard';
 import DetectionCard from './components/DetectionCard';
 import IntelNoteCard from './components/IntelNoteCard';
+import CertificationsSection from './components/CertificationsSection';
 import { researchReports } from './data/research';
 import { detectionProjects } from './data/detections';
 import { intelNotes } from './data/intelNotes';
@@ -71,7 +72,7 @@ export default function App() {
 
   // Scroll spy to highlight navbar links automatically
   useEffect(() => {
-    const sections = ['home', 'research', 'detections', 'intel', 'contact'];
+    const sections = ['home', 'research', 'detections', 'certifications', 'intel', 'contact'];
     const observerOptions = {
       root: null,
       rootMargin: '-30% 0px -50% 0px',
@@ -356,6 +357,9 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        {/* Certifications Section */}
+        <CertificationsSection />
 
         {/* Intelligence Notes Section */}
         <section id="intel" className="page-section bg-secondary" style={{ backgroundColor: 'var(--bg-secondary)', borderTop: '1px solid var(--glass-border)' }}>
